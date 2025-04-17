@@ -12,7 +12,7 @@ interface BookListProps {
 const BookList = ({ title, books, containerClassName } : BookListProps) => {
   return (
     <section className={cn("", containerClassName)}>
-        <h2 className='font-bebas-neue text-4xl text-light-100'>Popular Books</h2>
+        <h2 className='font-bebas-neue text-4xl text-light-100'>{title}</h2>
 
         <ul className='book-list'>
             {books?.map((book, index) => (

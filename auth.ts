@@ -1,8 +1,9 @@
 import NextAuth, { User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google"
 import { db } from "./database/drizzle";
 import { users } from "./database/schema";
-import { eq } from "drizzle-orm";
+import { eq, param } from "drizzle-orm";
 import { compare } from "bcryptjs";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -38,6 +39,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         } as User;
       },
     }),
+    Google({
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code"
+        }
+      }
+    })
   ],
   pages: {
     signIn : "/sign-in",
@@ -64,5 +74,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         return session
     },
+
+    // async signIn(params) {
+    //    const {account, profile} = params;
+    //    if(account?.provider === "google") {
+    //     return profile?.email_verified && profile?.email?.endsWith("@example.com")
+    //    }
+
+    //    return true
+    // },
   }
 });
